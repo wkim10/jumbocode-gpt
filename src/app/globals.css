@@ -2,32 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@media (max-width: calc(500px + 26rem)) {
+  .header {
+    width: 532px;
+    padding-inline: 16px;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@media (max-width: 532px) {
+  .header {
+    max-width: 100%;
+  }
+
+  .pageWrapper {
+    max-width: calc(100% - 32px);
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.assistant.inner {
+  align-self: flex-start;
+  background-color: #e0e0e0;
+  border-color: #ccc;
+}
+
+.checkmark:hover {
+  color: black;
+}
+
+.copy:hover {
+  color: black;
+}
+
+.message.container {
+  overflow-wrap: anywhere;
+}
+
+.message.inner {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 7px;
+}
+
+.message.assistant.container {
+  text-align: left;
+}
+
+.message.user.container {
+  text-align: right;
+}
+
+.user.inner {
+  align-self: flex-end;
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+.user-input::placeholder {
+  color: #888;
+}
+
+.wrapper {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+p {
+  margin-block: 0;
+}
+
+pre {
+  text-wrap: wrap;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+thead {
+  border-color: #2770c2;
+}
+
+thead th {
+  background-color: #2770c2;
+  border: 1px solid #ccc;
+  color: white;
+  padding: 12px;
+}
+
+tbody {
+  color: black;
+}
+
+tbody tr {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+tbody tr:nth-child(2n) {
+  background-color: rgba(220, 220, 220, 0.5);
+}
+
+tbody td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  word-wrap: break-word;
+}
+
+button {
+  background-color: #0052cc;
+  border: 1px solid #0052cc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 400;
+  height: 40px;
+  letter-spacing: normal;
+  line-height: 38px;
+  min-width: 80px;
+  outline: none;
+  padding: 0 24px;
+  text-align: center;
+  text-decoration: none;
 }
