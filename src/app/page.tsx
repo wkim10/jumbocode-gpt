@@ -32,7 +32,7 @@ export default function Home() {
     if (status === "authenticated") {
       const fetchAndSetMessages = async () => {
         if (session.user.id) {
-          const messages = await fetchMessages(session.user.id);
+          const messages = await fetchMessages();
           setMessages(messages.message);
         }
       };
@@ -95,7 +95,7 @@ export default function Home() {
   const resetMessages = async () => {
     if (session?.user.id) {
       try {
-        await deleteMessages({ body: { userId: session.user.id } });
+        await deleteMessages();
         setMessages([]);
       } catch (error) {
         console.error("Failed to reset messages:", error);
@@ -153,13 +153,11 @@ export default function Home() {
       if (userId) {
         await saveMessage({
           body: {
-            userId: userId,
             newMessage: userMessage,
           },
         });
         await saveMessage({
           body: {
-            userId: userId,
             newMessage: assistantMessage,
           },
         });

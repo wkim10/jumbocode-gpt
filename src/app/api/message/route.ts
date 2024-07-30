@@ -1,17 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/authOptions";
 
 const prisma = new PrismaClient();
 
 export const POST = async (request: NextRequest) => {
   try {
-    const { userId, newMessage } = await request.json();
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session.user.id) {
+      return NextResponse.json({
+        code: "ERROR",
+        message: "Unauthorized",
+      });
+    }
+
+    const { newMessage } = await request.json();
 
     const savedMessage = await prisma.message.create({
       data: {
         role: newMessage.role,
         content: newMessage.content,
-        userId: userId,
+        userId: session.user.id,
       },
     });
 
@@ -28,21 +39,19 @@ export const POST = async (request: NextRequest) => {
   }
 };
 
-export const GET = async (request: NextRequest) => {
+export const GET = async () => {
   try {
-    console.log("GET HERE!");
-    const url = new URL(request.url);
-    const userId = url.searchParams.get("userId");
+    const session = await getServerSession(authOptions);
 
-    if (!userId) {
+    if (!session || !session.user.id) {
       return NextResponse.json({
         code: "ERROR",
-        message: "Missing userId parameter",
+        message: "Unauthorized",
       });
     }
 
     const messages = await prisma.message.findMany({
-      where: { userId: userId },
+      where: { userId: session.user.id },
       orderBy: { createdAt: "asc" },
     });
 
@@ -59,19 +68,19 @@ export const GET = async (request: NextRequest) => {
   }
 };
 
-export const DELETE = async (request: NextRequest) => {
+export const DELETE = async () => {
   try {
-    const { userId } = await request.json();
+    const session = await getServerSession(authOptions);
 
-    if (!userId) {
+    if (!session || !session.user.id) {
       return NextResponse.json({
         code: "ERROR",
-        message: "Missing userId parameter",
+        message: "Unauthorized",
       });
     }
 
     await prisma.message.deleteMany({
-      where: { userId: userId },
+      where: { userId: session.user.id },
     });
 
     return NextResponse.json({
